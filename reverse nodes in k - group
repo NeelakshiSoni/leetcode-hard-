@@ -1,0 +1,30 @@
+   def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        
+        if not head or not head.next : 
+            return head 
+        
+        
+        curr = head 
+        
+        for i in range(k-1) : 
+            curr = curr.next
+            if not curr : 
+                return head 
+            
+        next_head = curr.next  if curr else None
+        if curr : 
+            curr.next = None
+        #reverse thsi head 
+        pre  , curr = None , head 
+        last_one = head 
+        
+        while curr : 
+            temp = curr.next 
+            curr.next = pre 
+            pre = curr 
+            curr = temp 
+            
+        last_one.next = self.reverseKGroup(next_head , k)
+        
+        return pre
+        
