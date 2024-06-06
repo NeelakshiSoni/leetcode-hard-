@@ -1,0 +1,35 @@
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        memo = {}
+        
+        
+        def dfs(s_idx , p_idx) : 
+            
+            if (s_idx , p_idx) in memo : 
+                return memo[(s_idx , p_idx)]
+            
+            while s_idx < len(s) and p_idx < len(p) and (s[s_idx] == p[p_idx]  or p[p_idx]== "?") : 
+                p_idx += 1 
+                s_idx += 1 
+                
+            if s_idx >= len(s) and p_idx >= len(p) : 
+                return True 
+            
+            if p_idx >= len(p) : 
+                return False
+            
+            if s_idx >= len(s):
+            # All remaining characters in the pattern must be '*'
+                return all(x == '*' for x in p[p_idx:])
+            
+            
+            if p_idx < len(p) and p[p_idx] == "*" : 
+                memo[(s_idx , p_idx)] = dfs(s_idx+1 , p_idx) or dfs(s_idx+1 , p_idx+1) or dfs(s_idx , p_idx +1 )
+                return dfs(s_idx+1 , p_idx) or dfs(s_idx+1 , p_idx+1) or dfs(s_idx , p_idx +1 )
+            else :
+                memo[(s_idx , p_idx)] = False
+                
+            
+                return False 
+            
+        return dfs(0 , 0 )
